@@ -30,7 +30,7 @@
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Category name</label>
               <select name="category" class="form-select">
-                <% allCategories.forEach(category=>{ %>
+                <% category.forEach(category=>{ %>
                 <option selected value="<%=category.id %>" label="<%=category.categoryName %>">
                 </option>
                 <% }) %>

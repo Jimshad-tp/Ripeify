@@ -123,12 +123,12 @@ module.exports = {
   getProduct: async (req, res, next) => {
     try {
       if (req.user?.isAdmin) {
- 
+        const category = await categoryModel.find()
         const product = await productModel.find().populate("category").exec()
 
         res.render('admin/product',
           {
-            product: product,
+            product: product,category:category,
             layout: 'layout/usermanage-layout'
           })
       }

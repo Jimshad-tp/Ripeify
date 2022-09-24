@@ -5,18 +5,12 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const ejs = require('ejs');
 const flash = require('connect-flash');
-const mongoose = require('./config/dbConnection')
-
-
 const passport = require("passport");
 const session = require("express-session")
-
-
 const expressLayouts = require('express-ejs-layouts');
 const indexRouter = require("./routes/index");
 const adminRouter = require("./routes/admin");
 const userModel = require("./models/userModel");
-const categoryModel = require('./models/categoryModel');
 const dbConnection = require("./config/dbConnection");
 
 const app = express();
@@ -52,7 +46,6 @@ app.use(function(req, res, next) {
 });
 
 //passport
-
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(userModel.createStrategy())
@@ -75,7 +68,6 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
-
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -86,7 +78,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
  });
-
-
 
 module.exports = app;
