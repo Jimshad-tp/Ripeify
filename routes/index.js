@@ -1,21 +1,21 @@
 var express = require('express');
 const { render } = require('../app');
+const productControl = require('../controller/productControl');
 var router = express.Router();
 const userControl = require('../controller/userControl')
+const ProductModel = require('../models/ProductModel');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  const user=req?.user
-  res.render('home',{user:user});
-});
+router.get('/',productControl.showProduct);
 
 router.get('/login',userControl.checkLogout, function(req, res, next) {
-  
+
   res.render('user/user-login');
 });
 
 router.get('/signup',userControl.checkLogout, function(req, res, next) {
-  res.render('user/user-signup');
+  const errorMessage = req.flash("message")
+  res.render('user/user-signup',{errorMessage:errorMessage,layout:"layout/layout"});
 });
 
 router.post('/signup',userControl.userRegister)
@@ -29,12 +29,25 @@ router.post("/login",userControl.userLogin,(req,res)=>{
   }
 }),
 
-
 router.post("/logout",userControl.userLogout)
-
 router.get('/product',(req,res)=>{
 res.render('user/product')
 })
+
+
+router.get('/productPage',productControl.pageProduct)
+router.get('/viewProduct/:id',productControl.viewProduct)
+router.post('/addtocart/:id',productControl.addTocart)
+router.get('/getcart',productControl.getcart)
+router.get('/cartItemCount',productControl.cartItemCount)
+router.delete('/deleteCartItem/:id',productControl.deleteItem)
+
+router.get('/checkout',productControl.getCheckout)
+router.post('/addtowishlist/:id',productControl.addTowishlist)
+router.get('/getwishlist',productControl.getWishlist)
+router.get('/wishlistItemCount',productControl.wishlistItemCount)
+
+
 
 
 module.exports = router;

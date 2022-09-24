@@ -35,4 +35,4 @@ UserSchema.plugin(passportLocalMongoos, {
   }
 });
 
-module.exports = User = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema);

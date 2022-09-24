@@ -1,4 +1,5 @@
 const userModel = require("../models/userModel");
+const productModel = require('../models/ProductModel')
 const passport = require("passport");
 
 module.exports = {
@@ -13,9 +14,11 @@ module.exports = {
         (err, user) => {
           if (err) {
             console.log(err);
+            req.flash("message", "User Already registered")
             res.redirect("/signup");
           } else {
             passport.authenticate("local")(req, res, () => {
+             
               res.redirect("/");
             });
           }
@@ -28,8 +31,8 @@ module.exports = {
   },
 
   userLogin: passport.authenticate("local", {
-    
     failureRedirect: "/login",
+
   }),
 
   userLogout: (req, res) => {
@@ -37,7 +40,7 @@ module.exports = {
       if (err) {
         console.log(err);
       } else {
-        console.log("logout success");
+    
         res.redirect("/");
       }
     });
@@ -51,4 +54,5 @@ module.exports = {
       next();
     }
   }
+ 
 };

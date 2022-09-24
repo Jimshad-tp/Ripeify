@@ -1,50 +1,33 @@
 var express = require('express');
 const { response } = require('../app');
 var router = express.Router();
+const multer = require('multer');
 const adminControl = require("../controller/adminControl");
+const middlewares = require('../middlewares/multer');
+
 const categoryModel = require('../models/categoryModel');
-const userModel = require('../models/userModel')
+const ProductModel = require('../models/ProductModel');
+const userModel = require('../models/userModel');
+const userControl = require('../controller/userControl');
+const { getCategory } = require('../controller/adminControl');
+
+
 
 /* GET users listing. */
 
-
-//admin login
-router.get('/', adminControl.adminlogin, function (req, res, next) {
-  console.log('admin login');
-  res.render('admin/admin-home');
-});
-
-//admin logout
-router.get('/', adminControl.adminlogout, function (req, res, next) {
-  console.log('admin logout');
-  res.redirect('/')
-});
-
-router.get('/getuserdata', adminControl.getuserdata, async function (req, res, next) {
-  try {
-    const users = await userModel.find({})
-    res.render('admin/user-manage', { users: users,layout:'layout/usermanage-layout'});
-  } catch (err) {
-    console.log(err)
-  }
-});
-
+router.get('/', adminControl.adminLogin);
+router.get('/', adminControl.adminLogout);
+router.get('/getuserdata', adminControl.getUserdata)
 router.post("/blockuser/:id", adminControl.blockUser)
-router.post('/activeUser/:id',adminControl.activeUser)
-
-router.get('/getcategory',adminControl.getcategory,async (req,res)=>{
-  try{
-    const categories = await categoryModel.find().sort({categoryName:1})
-    res.render('admin/category-manage',{categories:categories,layout:'layout/usermanage-layout'})
-  }catch(err){
-    console.log(err);
-  }
-})
-
-router.post('/addCategory',adminControl.addcategory)
-router.post('/editCategory',adminControl.editCategory)
-
-
+router.post('/activeUser/:id', adminControl.activeUser)
+router.get('/getcategory', adminControl.getCategory,)
+router.post('/addCategory', adminControl.addCategory)
+router.post('/editCategory/:id', adminControl.editCategory)
+router.post('/deletecategory/:id', adminControl.deleteCategory)
+router.get('/product', adminControl.getProduct)
+router.post('/addproduct', middlewares.send, adminControl.addProduct)
+router.post('/editproduct/:id', adminControl.editproduct)
+router.post('/deleteproduct/:id', adminControl.deleteProduct)
 
 
 
