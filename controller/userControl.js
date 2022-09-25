@@ -53,6 +53,51 @@ module.exports = {
     } else {
       next();
     }
-  }
+  },
  
+  getProfile :async  (req,res,next) => {
+    try {
+      const userId = req.user.id
+      const user =await userModel.findById(userId)
+      res.render("user/profile",{user:user})
+
+    } catch (error) {
+      console.log(error);      
+    }
+  },
+  addAddress : async (req,res) => {
+    try {
+      console.log(req.body)
+      const userId = req.user.id
+      const userData =  await userModel.findById(userId)
+      userData.Address.unshift({
+        firstName : req.body.firstName,
+        lastName : req.body.lastName,
+        house : req.body.house,
+        address : req.body.address,
+        city : req.body.city,
+        state :req.body.state,
+        pincode : req.body.pincode,
+        phone : req.body.phone
+
+      })
+      await userData.save()
+      res.redirect("/profile")
+      res.status(201).json({message:"new address added"})
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({error})
+    }
+  },
+  deleteAddress : async (req,res) => {
+    try {
+      const userId = req.user.id
+     await userModel.findByIdAndRemove(userId)
+     res.redirect('/')
+     console.log("address deleted");
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };

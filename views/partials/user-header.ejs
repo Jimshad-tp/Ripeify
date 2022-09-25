@@ -39,11 +39,10 @@
                     <% if (locals.user) { %>  
                         
                         <div class="dropdown-menu m-0">
-                            <form action="/profile" method="post">
+                            
                              
-                                <button type="submit" class="dropdown-item">Profile</button>
-                            </form> 
-                            <form action="/logout" method="post">
+                                <a href="/profile"><button  class="dropdown-item">Profile</button></a>
+                            
                                 <button type="submit" class="dropdown-item">Logout</button>
                             </form>
                         

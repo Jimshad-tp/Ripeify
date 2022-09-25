@@ -2,9 +2,43 @@ const { query } = require("express");
 const mongoose = require("mongoose");
 const passportLocalMongoos = require("passport-local-mongoose");
 
-const Schema = mongoose.Schema;
+const AddressSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
+    type: String,
+    required: true
+  },
+  house: {
+    type: String,
+    required: true
+  },
+  address: {
+    type: String,
+    required: true
+  },
+  city: {
+    type: String,
+    required: true
+  },
+  state: {
+    type: String,
+    required: true
+  },
+  pincode: {
+    type: Number,
+    required: true
+  },
+  phone: {
+    type: String,
+    required: true
+  }
 
-const UserSchema = new Schema({
+
+})
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -15,21 +49,24 @@ const UserSchema = new Schema({
     unique: true,
   },
   isAdmin: {
-    type:Boolean,
-    required:true,
-     default:false
-    },
-  isActive:{
-    type:Boolean,
-    required:true,
-    default:true
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  isActive: {
+    type: Boolean,
+    required: true,
+    default: true
+  },
+  Address : {
+    type : [AddressSchema]
   }
-});
+},{timestamps : true});
 
 //password hash and salt 
 UserSchema.plugin(passportLocalMongoos, {
   usernameField: "email",
-  findByUsername:function (model,queryParameters){
+  findByUsername: function (model, queryParameters) {
     queryParameters.isActive = true;
     return model.findOne(queryParameters);
   }

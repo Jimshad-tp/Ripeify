@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
             offerPrice : Number
         }
     ],
-    quantuty : {
+    quantity : {
         type :Number
     },
     total : {

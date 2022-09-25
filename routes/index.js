@@ -4,6 +4,7 @@ const productControl = require('../controller/productControl');
 var router = express.Router();
 const userControl = require('../controller/userControl')
 const ProductModel = require('../models/ProductModel');
+const orderControl = require("../controller/orderControl")
 
 /* GET home page. */
 router.get('/',productControl.showProduct);
@@ -42,7 +43,14 @@ router.get('/getcart',productControl.getcart)
 router.get('/cartItemCount',productControl.cartItemCount)
 router.delete('/deleteCartItem/:id',productControl.deleteItem)
 
-router.get('/checkout',productControl.getCheckout)
+router.get("/profile",userControl.getProfile)
+router.post("/addAddress",userControl.addAddress)
+router.delete('deleteAddress/:index',userControl.deleteAddress)
+
+router.get('/checkout',(req,res) =>{
+  res.render('user/checkout')
+})
+router.post("/placeorder",orderControl.checkout)
 router.post('/addtowishlist/:id',productControl.addTowishlist)
 router.get('/getwishlist',productControl.getWishlist)
 router.get('/wishlistItemCount',productControl.wishlistItemCount)
