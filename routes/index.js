@@ -45,7 +45,7 @@ router.delete('/deleteCartItem/:id',productControl.deleteItem)
 
 router.get("/profile",userControl.getProfile)
 router.post("/addAddress",userControl.addAddress)
-router.delete('deleteAddress/:index',userControl.deleteAddress)
+router.delete('/deleteAddress/:index',userControl.deleteAddress)
 
 router.get('/checkout',(req,res) =>{
   res.render('user/checkout')

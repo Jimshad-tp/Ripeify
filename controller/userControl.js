@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 const productModel = require('../models/ProductModel')
 const passport = require("passport");
+const { json } = require("express");
 
 module.exports = {
   userRegister: (req, res) => {
@@ -18,7 +19,7 @@ module.exports = {
             res.redirect("/signup");
           } else {
             passport.authenticate("local")(req, res, () => {
-             
+
               res.redirect("/");
             });
           }
@@ -40,7 +41,7 @@ module.exports = {
       if (err) {
         console.log(err);
       } else {
-    
+
         res.redirect("/");
       }
     });
@@ -54,48 +55,49 @@ module.exports = {
       next();
     }
   },
- 
-  getProfile :async  (req,res,next) => {
+
+  getProfile: async (req, res, next) => {
     try {
       const userId = req.user.id
-      const user =await userModel.findById(userId)
-      res.render("user/profile",{user:user})
+      const user = await userModel.findById(userId)
+      res.render("user/profile", { user: user })
 
     } catch (error) {
-      console.log(error);      
+      console.log(error);
     }
   },
-  addAddress : async (req,res) => {
+  addAddress: async (req, res) => {
     try {
       console.log(req.body)
       const userId = req.user.id
-      const userData =  await userModel.findById(userId)
+      const userData = await userModel.findById(userId)
       userData.Address.unshift({
-        firstName : req.body.firstName,
-        lastName : req.body.lastName,
-        house : req.body.house,
-        address : req.body.address,
-        city : req.body.city,
-        state :req.body.state,
-        pincode : req.body.pincode,
-        phone : req.body.phone
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        house: req.body.house,
+        address: req.body.address,
+        city: req.body.city,
+        state: req.body.state,
+        pincode: req.body.pincode,
+        phone: req.body.phone
 
       })
       await userData.save()
       res.redirect("/profile")
-      res.status(201).json({message:"new address added"})
+      // res.status(201).json({message:"new address added"})
     } catch (error) {
       console.log(error);
-      res.status(500).json({error})
+      res.status(500).json({ error })
     }
   },
-  deleteAddress : async (req,res) => {
+  deleteAddress: async (req, res) => {
     try {
       const userId = req.user.id
-     await userModel.findByIdAndRemove(userId)
-     res.redirect('/')
-     console.log("address deleted");
-
+      const addressIndex = Number(req.params.index)
+      const user = await userModel.findById(userId)
+      user.Address.splice(addressIndex, 1)
+      await user.save()
+      return res.status(201).json({ message: "address deleted" })
     } catch (error) {
       console.log(error);
     }
