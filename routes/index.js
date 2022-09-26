@@ -46,11 +46,13 @@ router.delete('/deleteCartItem/:id',productControl.deleteItem)
 router.get("/profile",userControl.getProfile)
 router.post("/addAddress",userControl.addAddress)
 router.delete('/deleteAddress/:index',userControl.deleteAddress)
+router.post('/editAddress/:id',userControl.editAddress)
 
-router.get('/checkout',(req,res) =>{
-  res.render('user/checkout')
-})
-router.post("/placeorder",orderControl.checkout)
+// router.get('/checkout',(req,res) =>{
+//   res.render('user/checkout')
+// })
+router.get('/checkout',orderControl.getCheckout)
+// router.post("/placeorder",orderControl.checkout)
 router.post('/addtowishlist/:id',productControl.addTowishlist)
 router.get('/getwishlist',productControl.getWishlist)
 router.get('/wishlistItemCount',productControl.wishlistItemCount)

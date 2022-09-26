@@ -93,13 +93,40 @@ module.exports = {
   deleteAddress: async (req, res) => {
     try {
       const userId = req.user.id
-      const addressIndex = Number(req.params.index)
+      const addressId = Number(req.params.id)
       const user = await userModel.findById(userId)
-      user.Address.splice(addressIndex, 1)
+      user.Address.splice(addressId, 1)
       await user.save()
       return res.status(201).json({ message: "address deleted" })
     } catch (error) {
       console.log(error);
+    }
+  },
+  editAddress : async (req,res) => {
+    try {
+      const userId = req.user.id
+      const addressId = req.params.id
+
+    await userModel.findByIdAndUpdate(addressId,{
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        house: req.body.house,
+        address: req.body.address,
+        city: req.body.city,
+        state: req.body.state,
+        pincode: req.body.pincode,
+        phone: req.body.phone
+
+      })
+
+      console.log(req.body);
+   
+      res.redirect('/profile')
+      console.log("address edited");
+   
+    } catch (error) {
+      console.log(error);
+      
     }
   }
 };

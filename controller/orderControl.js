@@ -1,3 +1,4 @@
+const cartModel = require("../models/cartModel");
 const userModel = require("../models/userModel")
 
 module.exports = {
@@ -20,6 +21,16 @@ module.exports = {
         } catch (error) {
             console.log(error)
           
+        }
+      },
+      getCheckout : async (req,res) => {
+        try {
+          const userId = req.user.id
+          let cartCheckout = await cartModel.findOne({userId:userId}).populate("products","productId")
+          res.render('user/checkout',{cartCheckout})
+
+        } catch (error) {
+          console.log(error);
         }
       }
 }

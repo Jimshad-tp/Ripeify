@@ -5,7 +5,11 @@
     <div class="col-md-3 border-right">
       <div class="d-flex flex-column align-items-center text-center p-3 py-5">
         <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-        <span class="font-weight-bold"><%= user.name %> </span><span class="text-black-50"><%=user.email %> </span><span> </span>
+        <span class="font-weight-bold">
+          <h4><%= user.name %></h4>
+        </span><span class="text-black-50">
+          <h5><%=user.email %></h5>
+        </span><span> </span>
       </div>
     </div>
     <div class="col-md-5 border-right">
@@ -65,7 +69,7 @@
     <div class="col-md-4">
       <div class="p-3 py-5">
         <div class="d-flex justify-content-between align-items-center experience">
-          <span>Address</span>
+          <span>Recent Address</span>
           <!-- <span class="border px-3 p-1 add-experience">
                 <i class="fa fa-plus"></i>&nbsp;Add Address</span> -->
         </div>
@@ -83,13 +87,11 @@
         <div class="row mt-2 mb-2" id="myAddress">
           <% user.Address.forEach((userAddress,index) => { %>
           <div class="col-sm-12">
-
             <div class="card">
               <div class="card-body">
-                <h5 class="d-flex align-items-center">Recent Address</h5>
-                <div class="row" id="address-<%= userAddress.id %>">
-
-                  <div class="col-md-12 mb-2" id="address-<%= index %> ">
+                <h5 class="d-flex align-items-center"></h5>
+                <div class="row" id="">
+                  <div class="col-md-12 mb-2">
                     <div class="card">
                       <div class="card-body">
                         <h5 class="card-title">
@@ -101,43 +103,98 @@
                           <%= userAddress.state %>, <br>
                           Pincode : <%= userAddress.pincode %>,<br>
                           Ph : <%= userAddress.phone %>
-
                         </address>
-
                         <!-- Call to action buttons -->
                         <ul class="list-inline m-0">
-
                           <li class="list-inline-item">
-                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                            <!-- <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add Product</button> -->
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-bs-toggle="modal" data-placement="top" data-bs-target="#exampleModal" title="Edit"><i class="fa fa-edit"></i></button>
                           </li>
                           <li class="list-inline-item float-end">
-                            <button class="btn btn-danger btn-sm rounded-0" onclick="deleteAddress('<%=index%>','<%=userAddress.id%>')" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button></a>
+                            <button class="btn btn-danger btn-sm rounded-0" onclick="deleteAddress('<%=userAddress.id%>')" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button></a>
                           </li>
                         </ul>
 
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Address</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="card-body">
+                                <form action="/editAddress/<%= userAddress.id %>" method="post">
+                                  <div class="row mt-2">
+                                    <div class="col-md-6">
+                                      <label class="labels">First Name</label>
+                                      <input type="text" class="form-control" placeholder="" value="<%= userAddress.firstName%>" name="firstName">
+                                    </div>
+                                    <div class="col-md-6">
+                                      <label class="labels">Last Name</label>
+                                      <input type="text" class="form-control" value="<%=userAddress.lastName %>" placeholder="" name="lastName" >
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+
+                                    <div class="col-md-12">
+                                      <label class="labels">Address</label>
+                                      <input type="text" class="form-control" placeholder="Flat, House no., Building," value="<%= userAddress.house %>" name="house" ><br>
+                                      <input type="text" class="form-control" placeholder="Area, Street,Village" value=" <%= userAddress.address %>" name="address" >
+                                    </div>
+                                    <div class="col-md-12">
+                                      <label class="labels">Town/City</label>
+                                      <input type="text" class="form-control" placeholder="" value="<%= userAddress.city%>" name="city" >
+                                    </div>
+                                    <div class="col-md-12">
+                                      <label class="labels">State</label>
+                                      <input type="text" class="form-control" placeholder="" value=" <%= userAddress.state %>" name="state" id="state" >
+                                    </div>
+                                    <div class="col-md-12">
+                                      <label class="labels">Pincode</label>
+                                      <input type="text" class="form-control" placeholder="6-digits" value="<%= userAddress.pincode %>" name="pincode" >
+                                    </div>
+                                    <div class="col-md-12">
+                                      <label class="labels">Mobile number</label>
+                                      <input type="text" class="form-control" placeholder="" value="<%= userAddress.phone %>" >
+                                    </div>
+
+                                    <!-- <div class="col-md-12">
+          <label class="labels">Education</label>
+          <input type="text" class="form-control" placeholder="education" value="">
+      </div> -->
+                                  </div>
+
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                    </form>
+                                  </div>
+                              </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-
                   </div>
-                  <% }) %>
                 </div>
-
               </div>
             </div>
           </div>
+          <% }) %>
         </div>
-
+        
       </div>
     </div>
   </div>
 </div>
-
+</div>
 
 <%- include("../partials/footer") %>
 
 
 <script>
-  async function deleteAddress(index, id) {
+  async function deleteAddress(id) {
     try {
       const response = await Swal.fire({
         title: 'Are you sure?',
@@ -152,10 +209,10 @@
 
         const respose = await axios({
           method: "delete",
-          url: `/deleteAddress/${index}`
+          url: `/deleteAddress/${id}`
         })
         if (respose.status == 201) {
-          $(`#address-${id}`).load(location.href + ` #address-${id}>*`, "");
+          $(`#myAddress`).load(location.href + ` #myAddress>*`, "");
           const swal = await Swal.fire(
             'Deleted!',
             'Your file has been deleted.',
