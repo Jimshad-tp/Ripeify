@@ -32,6 +32,7 @@ module.exports = {
   },
 
   userLogin: passport.authenticate("local", {
+   
     failureRedirect: "/login",
 
   }),
@@ -42,7 +43,7 @@ module.exports = {
         console.log(err);
       } else {
 
-        res.redirect("/");
+        res.redirect("/home");
       }
     });
   },
@@ -50,7 +51,7 @@ module.exports = {
 
   checkLogout: (req, res, next) => {
     if (req.isAuthenticated()) {
-      res.redirect("/");
+      res.redirect("/home");
     } else {
       next();
     }
@@ -63,12 +64,12 @@ module.exports = {
       res.render("user/profile", { user: user })
 
     } catch (error) {
-      console.log(error);
+      return res.status(500).json({error})
     }
   },
   addAddress: async (req, res) => {
+    console.log(req.body)
     try {
-      console.log(req.body)
       const userId = req.user.id
       const userData = await userModel.findById(userId)
       userData.Address.unshift({
@@ -83,8 +84,7 @@ module.exports = {
 
       })
       await userData.save()
-      res.redirect("/profile")
-      // res.status(201).json({message:"new address added"})
+      res.redirect('back');
     } catch (error) {
       console.log(error);
       res.status(500).json({ error })
@@ -99,34 +99,29 @@ module.exports = {
       await user.save()
       return res.status(201).json({ message: "address deleted" })
     } catch (error) {
-      console.log(error);
+      return res.status(500).json({error})
     }
   },
-  editAddress : async (req,res) => {
+  editAddress: async (req, res) => {
     try {
       const userId = req.user.id
       const addressId = req.params.id
-
-    await userModel.findByIdAndUpdate(addressId,{
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        house: req.body.house,
-        address: req.body.address,
-        city: req.body.city,
-        state: req.body.state,
-        pincode: req.body.pincode,
-        phone: req.body.phone
-
-      })
-
-      console.log(req.body);
-   
-      res.redirect('/profile')
-      console.log("address edited");
-   
+      let add = await userModel.updateOne({ userId, Address: { $elemMatch: { _id: addressId } } },
+        {
+          $set: {
+            "Address.$.firstName": req.body.firstName,
+            "Address.$.lastName": req.body.lastName,
+            "Address.$.house": req.body.house,
+            "Address.$.address": req.body.address,
+            "Address.$.city": req.body.city,
+            "Address.$.state": req.body.state,
+            "Address.$.pincode": req.body.pincode,
+            "Address.$.phone": req.body.phone
+          }
+        })
+      res.redirect('back')
     } catch (error) {
-      console.log(error);
-      
+      return res.status(500).json({error})
     }
   }
 };

@@ -42,8 +42,9 @@ body {
     cursor: pointer;
     border: solid 1px #BA68C8
 }
-
-
+.small-box{
+	background-color: #000;
+}
 /********** Template CSS **********/
 :root {
     --primary: #3CB815;
@@ -2495,12 +2496,16 @@ ol {
 	text-align: center;
 }
 
+button {
+	border: none;
+    background-color: white;
+}
 /*---------------------
   Checkout
 -----------------------*/
 
 .checkout {
-	padding-top: 80px;
+	padding-top: 0px;
 	padding-bottom: 60px;
 }
 

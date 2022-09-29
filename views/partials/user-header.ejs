@@ -1,4 +1,4 @@
-<div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
+<div class="container-fluid fixed-top px-0 wow fadeIn "  data-wow-delay="0.1s">
     <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
         <div class="col-lg-6 px-5 text-start">
             <small><i class="fa fa-map-marker-alt me-2"></i>123 Street, New York, USA</small>
@@ -40,9 +40,9 @@
                         
                         <div class="dropdown-menu m-0">
                             
-                             
-                                <a href="/profile"><button  class="dropdown-item">Profile</button></a>
                             
+                                <a href="/profile"><button  class="dropdown-item">Profile</button></a>
+                                <form action="/logout" method="post">
                                 <button type="submit" class="dropdown-item">Logout</button>
                             </form>
                         
@@ -67,7 +67,14 @@
                         <li><a href="/getcart"><i class="fa fa-shopping-bag"></i><span class="cart-item-count">0</span></a></li>
                       </ul>
                     </div>
-                   <% } %> 
+                   <% }else{ %> 
+                    <div class="header__cart">
+                        <ul>
+                          <li><a href="/login"><i class="fa fa-heart"></i><span class="wishlist-item-count">0</span></a></li>
+                          <li><a href="/login"><i class="fa fa-shopping-bag"></i><span class="cart-item-count">0</span></a></li>
+                        </ul>
+                      </div>
+                      <% } %> 
               
             </div>
         </div>

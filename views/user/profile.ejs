@@ -29,10 +29,7 @@
             </div>
           </div>
           <div class="row mt-3">
-            <!-- <div class="col-md-12">
-            <label class="labels"></label>
-            <input type="text" class="form-control" placeholder="enter phone number" value="">
-        </div> -->
+
             <div class="col-md-12">
               <label class="labels">Address</label>
               <input type="text" class="form-control" placeholder="Flat, House no., Building," value="" name="house" required><br>
@@ -54,36 +51,17 @@
               <label class="labels">Mobile number</label>
               <input type="text" class="form-control" placeholder="" value="" minlength="10" maxlength="10" name="phone" required>
             </div>
-
-            <!-- <div class="col-md-12">
-            <label class="labels">Education</label>
-            <input type="text" class="form-control" placeholder="education" value="">
-        </div> -->
           </div>
-
           <div class="mt-5 text-center"><button class="btn btn-primary rounded-pill py-sm-3 px-sm-5" type="submit">Save Profile</button>
           </div>
+        </form>
       </div>
-      </form>
     </div>
     <div class="col-md-4">
       <div class="p-3 py-5">
         <div class="d-flex justify-content-between align-items-center experience">
           <span>Recent Address</span>
-          <!-- <span class="border px-3 p-1 add-experience">
-                <i class="fa fa-plus"></i>&nbsp;Add Address</span> -->
         </div>
-
-        <!-- <div class="col-md-12">
-            <label class="labels">Experience in Desig</label>
-            <input type="text" class="form-control" placeholder="experience" value="">
-        </div>  -->
-
-        <!-- <div class="col-md-12">
-            <label class="labels">Additional Details</label>
-            <input type="text" class="form-control" placeholder="additional details" value="">
-        </div>  -->
-
         <div class="row mt-2 mb-2" id="myAddress">
           <% user.Address.forEach((userAddress,index) => { %>
           <div class="col-sm-12">
@@ -115,7 +93,7 @@
                           </li>
                         </ul>
 
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="exampleModa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -131,47 +109,40 @@
                                     </div>
                                     <div class="col-md-6">
                                       <label class="labels">Last Name</label>
-                                      <input type="text" class="form-control" value="<%=userAddress.lastName %>" placeholder="" name="lastName" >
+                                      <input type="text" class="form-control" value="<%=userAddress.lastName %>" placeholder="" name="lastName">
                                     </div>
                                   </div>
                                   <div class="row mt-3">
 
                                     <div class="col-md-12">
                                       <label class="labels">Address</label>
-                                      <input type="text" class="form-control" placeholder="Flat, House no., Building," value="<%= userAddress.house %>" name="house" ><br>
-                                      <input type="text" class="form-control" placeholder="Area, Street,Village" value=" <%= userAddress.address %>" name="address" >
+                                      <input type="text" class="form-control" placeholder="Flat, House no., Building," value="<%= userAddress.house %>" name="house"><br>
+                                      <input type="text" class="form-control" placeholder="Area, Street,Village" value=" <%= userAddress.address %>" name="address">
                                     </div>
                                     <div class="col-md-12">
                                       <label class="labels">Town/City</label>
-                                      <input type="text" class="form-control" placeholder="" value="<%= userAddress.city%>" name="city" >
+                                      <input type="text" class="form-control" placeholder="" value="<%= userAddress.city%>" name="city">
                                     </div>
                                     <div class="col-md-12">
                                       <label class="labels">State</label>
-                                      <input type="text" class="form-control" placeholder="" value=" <%= userAddress.state %>" name="state" id="state" >
+                                      <input type="text" class="form-control" placeholder="" value=" <%= userAddress.state %>" name="state" id="state">
                                     </div>
                                     <div class="col-md-12">
                                       <label class="labels">Pincode</label>
-                                      <input type="text" class="form-control" placeholder="6-digits" value="<%= userAddress.pincode %>" name="pincode" >
+                                      <input type="text" class="form-control" placeholder="6-digits" value="<%= userAddress.pincode %>" name="pincode">
                                     </div>
                                     <div class="col-md-12">
                                       <label class="labels">Mobile number</label>
-                                      <input type="text" class="form-control" placeholder="" value="<%= userAddress.phone %>" >
+                                      <input type="text" class="form-control" placeholder="" value="<%= userAddress.phone %>">
                                     </div>
-
-                                    <!-- <div class="col-md-12">
-          <label class="labels">Education</label>
-          <input type="text" class="form-control" placeholder="education" value="">
-      </div> -->
                                   </div>
-
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Edit</button>
-                                    </form>
-                                  </div>
+                                </form>
                               </div>
-                              </form>
                             </div>
+                            </form>
                           </div>
                         </div>
                       </div>
@@ -181,13 +152,11 @@
               </div>
             </div>
           </div>
-          <% }) %>
         </div>
-        
+        <% }) %>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <%- include("../partials/footer") %>
@@ -213,14 +182,14 @@
         })
         if (respose.status == 201) {
           $(`#myAddress`).load(location.href + ` #myAddress>*`, "");
-          const swal = await Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          )
         }
       }
     } catch (error) {
+      const swal = await Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      })
       console.log(error);
     }
   }

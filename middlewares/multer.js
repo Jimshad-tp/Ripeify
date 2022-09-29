@@ -25,10 +25,12 @@ const upload = multer({
     fileFilter: multerFilter,
 })
 
-const uploadImages = upload.array("image", 4)
+const uploadImages = upload.array("images", 4)
+const uploadBanner = upload.single("image")
 
 
-module.exports.send = (req, res, next) => {
+module.exports =  {
+    productImage : (req, res, next) => {
     return uploadImages(req, res, (err) => {
         if (err instanceof multer.MulterError) {
             // A Multer error occurred when uploading.
@@ -44,4 +46,22 @@ module.exports.send = (req, res, next) => {
             next()
         }
     })
+},
+bannerImage : (req, res, next) => {
+    return uploadBanner(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            // A Multer error occurred when uploading.
+
+            console.log(err)
+            res.redirect("/admin/banner")
+        } else if (err) {
+            // An unknown error occurred when uploading.
+      
+            console.log(err)
+            res.redirect("/admin/banner")
+        } else {
+            next()
+        }
+    })
+}
 }

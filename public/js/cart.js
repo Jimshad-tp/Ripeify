@@ -77,7 +77,7 @@ async function addToCart(productId,productName,price,quantity,offerPrice){
             }
             toastr.success('cart item quantity updated')
             $(`#cartItem-${productId}`).load(location.href + ` #cartItem-${productId}>*`, "");
-            $(`#cartItemtotal-${productId}`).load(location.href + ` #cartItemtotal-${productId}>*`, "");
+            $(`#cartItemtotal`).load(location.href + ` #cartItemtotal>*`, "");
         }catch(err){
             // window.location = '/login'
             console.error(err);

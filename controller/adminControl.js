@@ -4,6 +4,7 @@ const ObjectId = require('mongodb').ObjectId;
 const userModel = require('../models/userModel')
 const productModel = require('../models/ProductModel')
 const categoryModel = require('../models/categoryModel');
+const bannerModel = require('../models/bannerModel');
 const { off } = require("../app");
 
 
@@ -192,6 +193,42 @@ module.exports = {
       console.log(error);
       res.redirect('/admin/product')
 
+    }
+  },
+  banner : async (req,res) => {
+    try{
+      if (req.user?.isAdmin) {
+
+        const findBanner = await bannerModel.find()
+    
+        res.render('admin/banner-manage',{findBanner, layout: 'layout/usermanage-layout'});
+      }
+
+
+    }catch(err){
+console.log(err);
+    }
+  },
+  addBanner : async (req,res) => {
+    try {
+      console.log("files: "+req.files)
+      console.log("file: "+req.file)
+   
+      console.log(req.body);
+      if(req.user.isAdmin){
+        const image =   req.file != null ? req.file.filename : null     
+        console.log(image);
+      const banner = new bannerModel({
+        title : req.body.title,
+        image :image
+       
+      })
+      await banner.save()
+      console.log(banner);
+      }
+      res.redirect('back')
+    } catch (error) {
+      console.log(error);
     }
   }
 }

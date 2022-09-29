@@ -25,9 +25,11 @@ router.post('/addCategory', adminControl.addCategory)
 router.post('/editCategory/:id', adminControl.editCategory)
 router.post('/deletecategory/:id', adminControl.deleteCategory)
 router.get('/product', adminControl.getProduct)
-router.post('/addproduct', middlewares.send, adminControl.addProduct)
+router.post('/addproduct', middlewares.productImage, adminControl.addProduct)
 router.post('/editproduct/:id', adminControl.editproduct)
 router.post('/deleteproduct/:id', adminControl.deleteProduct)
+router.get('/banner',adminControl.banner)
+router.post('/addBanner',middlewares.bannerImage,adminControl.addBanner)
 
 
 

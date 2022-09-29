@@ -29,18 +29,19 @@ async function addToWishlist(id,productName){
         let indexCount =Number($(".wishlist-item-count").html())
         indexCount -= 1
         $(".wishlist-item-count").html(indexCount)
-        toastr.error("Item removed from a wishlist")
+        toastr.error("Item removed from wishlist")
         console.log("-1");
       }else if (response.status == 201){
         let indexCount = Number($(".wishlist-item-count").html())
         indexCount += 1
-       
         $(".wishlist-item-count").html(indexCount)
-        console.log(" +1");
-  
+        // toastr.options={"positionClass" : "toast-bottom-center"}
 
         toastr.success("Item added to wishlist")
-      console.log(success);
+
+        $(`#product`).load(location.href + ` #product>*`, "");
+        res.redirect('/')
+  
        
       }
    

@@ -7,7 +7,8 @@ const ProductModel = require('../models/ProductModel');
 const orderControl = require("../controller/orderControl")
 
 /* GET home page. */
-router.get('/',productControl.showProduct);
+router.get("/",userControl.userLogin,userControl.checkLogout),
+router.get('/home',productControl.showProduct);
 
 router.get('/login',userControl.checkLogout, function(req, res, next) {
 
@@ -31,6 +32,7 @@ router.post("/login",userControl.userLogin,(req,res)=>{
 }),
 
 router.post("/logout",userControl.userLogout)
+
 router.get('/product',(req,res)=>{
 res.render('user/product')
 })
