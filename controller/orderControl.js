@@ -2,7 +2,7 @@ const cartModel = require("../models/cartModel");
 const userModel = require("../models/userModel")
 
 module.exports = {
-  checkout: async (req, res, next) => {
+  placeOrder: async (req, res, next) => {
     try {
       console.log(req.body, 'checkout in..........');
       const userId = req.user.id

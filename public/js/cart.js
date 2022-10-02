@@ -71,9 +71,7 @@ async function addToCart(productId,productName,price,quantity,offerPrice){
                 }
                 let itemCount = Number($(".cart-item-count").html())
                 itemCount += Number.parseInt(quantity)
-                $(".cart-item-count").html(itemCount)
-             
-              
+                $(".cart-item-count").html(itemCount)                          
             }
             toastr.success('cart item quantity updated')
             $(`#cartItem-${productId}`).load(location.href + ` #cartItem-${productId}>*`, "");

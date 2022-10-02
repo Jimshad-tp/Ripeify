@@ -4,6 +4,7 @@ const userModel = require('../models/userModel');
 const ProductModel = require('../models/ProductModel');
 const categoryModel = require('../models/categoryModel')
 const wishlistModel = require('../models/wishlistModel')
+const bannerModel = require('../models/bannerModel')
 var mongoose = require('mongoose');
 const { find } = require('../models/userModel');
 
@@ -11,10 +12,12 @@ const { find } = require('../models/userModel');
 module.exports = {
   showProduct: async (req, res) => {
     try {
+      const viewBanner = await bannerModel.find()
       const allCategory = await categoryModel.find()
       const Allproduct = await productModel.find()
         .limit(12).exec();
-      res.render('home', { Allproduct: Allproduct, allCategory: allCategory });
+       
+      res.render('home', { Allproduct,allCategory,viewBanner});
     } catch (error) {
       res.redirect('/home')
       return res.status(500).json({error})
@@ -187,7 +190,7 @@ module.exports = {
       res.render('user/wishlist', { findwish: findwish })
     } catch (error) {
       console.log(error);
-      return res.status(500).json({error})
+     
     }
   },
 

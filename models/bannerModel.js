@@ -8,12 +8,12 @@ const bannerSchema = new mongoose.Schema({
     },
     image: {
         type:String,
-        require : true
+        required : true
     },
-    status : {
+    isActive : {
         type: Boolean,
-        default:true
+        default:false
     }
 
-})
+},{timestamps:true})
 module.exports = mongoose.model('Banner', bannerSchema)

@@ -76,24 +76,9 @@ async function removeFromWishlist(id,productName){
       let indexCount = Number($(".wishlist-item-count").html())
         indexCount += 1
         $(".wishlist-item-count").html(indexCount)
-        console.log("plus one");
-        toastr.info("good")
+  
     }
 
-    // {
-    //   let ItemCount = Number($(".wishlist-item-count").html())
-    //   ItemCount -= 1
-    //   if(ItemCount != 0 ){
-    //     $(".wishlist-item-count").html(ItemCount)
-    //     document.getElementById(`addtowishlist-${id}`).remove()
-    //     toastr.options = { "positionClass" : "toast-bottom-right"}
-    //     toastr.info('Item removed from wishlist')
-    //   }
-      
-    //   else{
-    //     window.location.reload()
-    //   }
-    // }
   }catch(err){
     console.error(err);
   }

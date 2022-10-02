@@ -53,10 +53,16 @@ module.exports = {
     if (req.isAuthenticated()) {
       res.redirect("/home");
     } else {
-      next();
+      res.render('user/user-login');
     }
   },
-
+  checkSignup: (req, res, next) => {
+    if (req.isAuthenticated()) {
+      res.redirect("/home");
+    } else {
+      res.render('user/user-signup');
+    }
+  },
   getProfile: async (req, res, next) => {
     try {
       const userId = req.user.id

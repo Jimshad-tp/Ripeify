@@ -25,7 +25,7 @@ const upload = multer({
     fileFilter: multerFilter,
 })
 
-const uploadImages = upload.array("images", 4)
+const uploadImages = upload.array("image", 4)
 const uploadBanner = upload.single("image")
 
 

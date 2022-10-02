@@ -71,8 +71,8 @@
                       </div>
                     </td>
                     <td class="shoping__cart__total">
-                      <% if(showcart.offerPrice) {%>
-                      ₹<%= (showcart.offerPrice * showcart.quantity).toFixed(2) %>
+                      <% if(showcart.productId.offerPrice) {%>            
+                      ₹<%= (showcart.productId.offerPrice * showcart.quantity).toFixed(2) %>
                       <% }else {%>
                       ₹<%= (showcart.price * showcart.quantity).toFixed(2) %>
                       <% } %>
@@ -84,9 +84,6 @@
                   </tr>
                   <%  }) %>
                 </tbody>
-
-
-
               </table>
             </div>
           </div>

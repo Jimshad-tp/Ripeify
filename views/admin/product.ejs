@@ -9,11 +9,9 @@
 
 <%- include('../partials/admin-header') %>
 
-
 <!-- Button add category  -->
 <div class="px-lg-5 py-5 mt-5 p-md-5">
   <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add Product</button>
-
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -41,12 +39,10 @@
               <label for="recipient-name" class="col-form-label">Quantity</label>
               <input type="String" class="form-control" name="quantity" id="recipient-name">
             </div>
-
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Stock</label>
               <input type="number" class="form-control" name="stock" id="recipient-name">
             </div>
-          
             <!-- <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Sub Category</label>
               <input type="text" class="form-control" name="sub category" id="recipient-name">
@@ -55,12 +51,11 @@
               <label for="recipient-name" class="col-form-label">Price</label>
               <input type="text" class="form-control" name="price" id="recipient-name">
             </div>
-         
-          <div>
-            <label class="form-label">Discount</label>
-            <input type="number" name="discount" min="1" value="" required class="form-control">
-          </div>
-           
+            <div>
+              <label class="form-label">Discount</label>
+              <input type="number" name="discount" min="1" value="" required class="form-control">
+            </div>
+
             <div class="mb-3">
               <label for="message-text" class="col-form-label">Discription</label>
               <input class="form-control" type="text" name="discription" id="message-text">
@@ -78,7 +73,6 @@
       </div>
     </div>
   </div>
-
   <div class="px-lg-5 py-2 mt-2 p-md-2">
     <div class="jumbotron shadow m-2 bg-white rounded">
       <table id="admin" class="table table-striped table-bordered table-hover" style="width:100%">
@@ -93,31 +87,25 @@
             <th>Discount %</th>
             <th>Offer price</th>
             <th>Actions</th>
-            
           </tr>
         </thead>
         <tbody>
-   
           <% product.forEach((product,index)=>{ %>
-         
-
           <tr>
             <td><%= index+1 %>
             </td>
             <td><img src="/files/<%=product.images[0]%>" alt="" height="100" width="110" class="center"> </td>
             <td><%= product.productName %></td>
             <td><%= product.category.categoryName %></td>
-           <td><%= product.quantity %> </td>
+            <td><%= product.quantity %> </td>
             <td> <%= product.price %></td>
             <td> <%= product.discount %> </td>
             <td> <%= product.offerPrice%> </td>
-          
             <td>
               <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#producteditModal<%= product.id %>" data-bs-whatever="@mdo">Edit</button>
               <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delproModal<%= product.id %> ">
                 Delete
               </button>
-            
               <div class="modal fade" id="producteditModal<%= product.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -151,8 +139,6 @@
                           <label for="recipient-name" class="col-form-label">Image</label>
                           <input type="file" multiple name="image" class="form-control" id="recipient-name">
                         </div>
-
-                        .
                         <div class="mb-3">
                           <label for="message-text" class="col-form-label">Discription</label>
                           <input class="form-control" name="discription" value=" <%= product.discription %>" id="message-text">
@@ -167,9 +153,6 @@
                 </div>
               </div>
             </td>
-            
-            
-
             <div class="modal fade" id="delproModal<%= product.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -191,18 +174,8 @@
               </div>
             </div>
             <% }) %>
-          
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-
-
-
-
-  <script>
-    $(document).ready(function() {
-      $('#admin').DataTable();
-    });
-  </script>

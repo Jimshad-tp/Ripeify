@@ -6,7 +6,7 @@ module.exports = {
 mongoose
   .connect(mongoURI)
   .then((res) => {
-    console.log("mongoose connected");
+    console.log("mongoose runnig on port 7000");
   })
   .catch((err) => {
     console.log("not connected");

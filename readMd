@@ -1,0 +1,48 @@
+Natural Food Is Always Healthy
+
+Organic Food Is Good For Health
+
+   let categoryid = productModel.findOne({category},{_id:0,category:1})
+
+
+   deleteCategory: async (req, res) => {
+    try {
+     const findcate =  await productModel.find().populate("category")
+     console.log(findcate);
+     findcate.category.forEach(findcate => {
+      findcate.id
+      console.log(findcate.id);
+     })
+   
+console.log(req.params.id);
+     if(find == req.params.id){
+      
+      console.log("category exist");
+      res.redirect('/admin/getcategory')
+     }else{
+      await categoryModel.findByIdAndDelete().exec()
+      console.log("category deleted");
+      res.redirect('/admin/getcategory')
+     }
+
+           // req.flash("message", "Category deleted")
+     
+    } catch (err) {
+      console.log(err);
+      res.redirect('/admin/getcategory')
+    }
+
+  }
+
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8"
+  src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
