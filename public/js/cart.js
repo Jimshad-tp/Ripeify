@@ -62,7 +62,7 @@ async function addToCart(productId,productName,price,quantity,offerPrice){
             })
             console.log(response)
             if(response.status == 200 ){
-                toastr.options = {"positionClass" : "toast-bottom-right"}
+                toastr.options={"positionClass" : "toastr-bottom-right"}
                 toastr.error ('this product is out of stock')
                 
             }else{
@@ -77,17 +77,15 @@ async function addToCart(productId,productName,price,quantity,offerPrice){
             $(`#cartItem-${productId}`).load(location.href + ` #cartItem-${productId}>*`, "");
             $(`#cartItemtotal`).load(location.href + ` #cartItemtotal>*`, "");
         }catch(err){
-            // window.location = '/login'
+            window.location = '/login'
             console.error(err);
         }
     }
 }
  function cart(id, name, price, offerPrice){
 
-
         let quantity = document.getElementById("itemQty").value
         addToCart(id, name, price, quantity, offerPrice)
         
   
-   
 }

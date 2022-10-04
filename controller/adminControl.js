@@ -6,6 +6,7 @@ const productModel = require('../models/ProductModel')
 const categoryModel = require('../models/categoryModel');
 const bannerModel = require('../models/bannerModel');
 const { off } = require("../app");
+const couponModel = require('../models/couponModel')
 
 
 module.exports = {
@@ -72,12 +73,12 @@ module.exports = {
         const categories = await categoryModel.find().sort(
           { categoryName: 1 })
         const errorMessage = req.flash("message")
-        const successMessage =req.flash("success")
+        const successMessage = req.flash("success")
         res.render('admin/category-manage', {
-           categories,
+          categories,
           errorMessage,
           successMessage,
-           layout: 'layout/usermanage-layout'
+          layout: 'layout/usermanage-layout'
         })
       }
     } catch (error) {
@@ -111,7 +112,7 @@ module.exports = {
       res.redirect('/admin/getcategory')
     }
   },
-  deleteCategory: async (req, res,next) => {
+  deleteCategory: async (req, res, next) => {
     try {
       const findCategory = await productModel.findOne({ category: req.params.id }, { category: 1 }).lean()
       const category = (JSON.stringify(findCategory?.category))?.replace(/['"]+/g, '')
@@ -123,7 +124,7 @@ module.exports = {
         res.redirect('back')
       } else {
         await categoryModel.findByIdAndDelete(req.params.id).exec()
-        req.flash("success" ,"Category deleted")
+        req.flash("success", "Category deleted")
         res.redirect('back')
       }
     } catch (err) {
@@ -186,10 +187,10 @@ module.exports = {
         discription: req.body.discription,
         images: req.body.productImages
       })
-      res.redirect('/admin/product')
+      res.redirect('back')
     } catch (error) {
       console.log(error);
-      res.redirect('/admin/product')
+      res.redirect('back')
     }
   },
   deleteProduct: async (req, res) => {
@@ -250,12 +251,63 @@ module.exports = {
       await bannerModel.findByIdAndUpdate(
         req.params.id,
         { isActive: true })
-      console.log("hhhhhhhhhhhhhhhhhhhhh");
       res.redirect('back')
     } catch (error) {
       console.log(error);
       res.redirect('back')
 
+    }
+  },
+  coupon : async (req,res) => {
+    try {
+    const coupon= await couponModel.find()
+
+    res.render("admin/coupon-manage",{coupon ,layout: 'layout/usermanage-layout' })
+           
+    } catch (error) {
+      console.log(error);
+      
+    }
+
+  },
+
+  addCoupon: async (req, res) => {
+    const {name,couponCode,discount,maxLimit,minPurchase,expDate} = req.body
+    try {
+      await couponModel.create({
+        name: name.toUpperCase(),
+        couponCode :couponCode.toUpperCase(),
+        discount,
+        maxLimit,
+        minPurchase,
+        expDate
+      })
+      res.redirect('admin/coupon-manage')
+
+    } catch (error) {
+      console.log(error);
+
+    }
+
+  },
+  deActivateCoupon : async (req,res) => {
+    try{
+      await couponModel.findByIdAndUpdate(req.params.id,{
+        isActive : false })
+      res.redirect('back')
+    }catch(err) {
+      console.log(err);
+      res.redirect('back')
+    }
+  },
+  activateCoupon : async (req,res) => {
+    try{
+      await couponModel.findByIdAndUpdate(req.params.id,
+        {isActive:true})
+        res.redirect('back')
+    }catch(err) {
+      console.log(err);
+      res.redirect('back')
     }
   }
 

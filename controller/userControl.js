@@ -2,6 +2,8 @@ const userModel = require("../models/userModel");
 const productModel = require('../models/ProductModel')
 const passport = require("passport");
 const { json } = require("express");
+const { sendOtp , getOtpForm } = require ("../middlewares/otp")
+
 
 module.exports = {
   userRegister: (req, res) => {
@@ -19,22 +21,24 @@ module.exports = {
             res.redirect("/signup");
           } else {
             passport.authenticate("local")(req, res, () => {
-
+              process.nextTick(async () => {
+                await sendOtp(req, res)
+              }) 
               res.redirect("/");
             });
           }
         }
       );
     } else {
+  
       console.log("password not match");
       res.redirect("/signup");
     }
   },
 
   userLogin: passport.authenticate("local", {
-   
+    
     failureRedirect: "/login",
-
   }),
 
   userLogout: (req, res) => {
@@ -43,7 +47,7 @@ module.exports = {
         console.log(err);
       } else {
 
-        res.redirect("/home");
+        res.redirect("/");
       }
     });
   },
@@ -87,7 +91,6 @@ module.exports = {
         state: req.body.state,
         pincode: req.body.pincode,
         phone: req.body.phone
-
       })
       await userData.save()
       res.redirect('back');

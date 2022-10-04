@@ -5,9 +5,13 @@ var router = express.Router();
 const userControl = require('../controller/userControl')
 const ProductModel = require('../models/ProductModel');
 const orderControl = require("../controller/orderControl")
+const authentication = require('../middlewares/authentication')
+const {sendOtp,getOtpForm,otpVerification} = require ('../middlewares/otp')
 
 /* GET home page. */
-router.get("/", userControl.userLogin, userControl.checkLogout),
+
+router.get('/',authentication.checkAccountVerifiedInIndex,productControl.showProduct)
+// router.get("/", userControl.userLogin, userControl.checkLogout),
   router.get('/home', productControl.showProduct);
 router.get('/login', userControl.checkLogout)
 
@@ -16,9 +20,15 @@ router.get('/signup', userControl.checkSignup, function (req, res, next) {
   res.render('user/user-signup', { errorMessage: errorMessage,});
 });
 
+
+
 router.post('/signup', userControl.userRegister)
+
+
+
+
 router.post("/login", userControl.userLogin, (req, res) => {
-  if (req.user.isAdmin) {
+  if (req.user.isAdmin === true) {
     res.redirect("/admin")
   }
   else {
@@ -26,6 +36,12 @@ router.post("/login", userControl.userLogin, (req, res) => {
   }
 })
 
+router.post('/resendOtp',async (req,res) => {
+  getOtpForm(req,res)
+  await sendOtp(req,res)
+})
+
+router.post("/validateOtp", otpVerification)
 router.post("/logout", userControl.userLogout)
 router.get('/productPage', productControl.pageProduct)
 router.get('/viewProduct/:id', productControl.viewProduct)
@@ -41,6 +57,7 @@ router.get('/checkout', orderControl.getCheckout)
 router.post('/addtowishlist/:id', productControl.addTowishlist)
 router.get('/getwishlist', productControl.getWishlist)
 router.get('/wishlistItemCount', productControl.wishlistItemCount)
+router.post('/redeem/:id',productControl.redeem)
 
 
 

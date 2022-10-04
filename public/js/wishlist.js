@@ -36,15 +36,13 @@ async function addToWishlist(id,productName){
         indexCount += 1
         $(".wishlist-item-count").html(indexCount)
         // toastr.options={"positionClass" : "toast-bottom-center"}
-
         toastr.success("Item added to wishlist")
 
         $(`#product`).load(location.href + ` #product>*`, "");
         res.redirect('/')
   
        
-      }
-   
+      }   
       console.log(response);
     } catch (error) {
       window.location.replace("/login")

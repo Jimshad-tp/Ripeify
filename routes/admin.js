@@ -14,27 +14,27 @@ const { getCategory } = require('../controller/adminControl');
 router.get('/', adminControl.adminLogin);
 router.get('/', adminControl.adminLogout);
 router.get('/getuserdata', adminControl.getUserdata)
+router.get('/getcategory', adminControl.getCategory,)
+router.get('/product', adminControl.getProduct)
+router.get('/banner',adminControl.banner)
+router.get('/coupon',adminControl.coupon)
+
 router.post("/blockuser/:id", adminControl.blockUser)
 router.post('/activeUser/:id', adminControl.activeUser)
-router.get('/getcategory', adminControl.getCategory,)
 router.post('/addCategory', adminControl.addCategory)
 router.post('/editCategory/:id', adminControl.editCategory)
-router.post('/deletecategory/:id', adminControl.deleteCategory, function (req,res,next){
-
-    const errorMessage = req.flash("message")
-    ;
-    console.log("hhhhhhhhhhhhhhhh")
-res.render('admin/category-manage',{errorMessage:errorMessage})
-})
-router.get('/product', adminControl.getProduct)
+router.post('/deletecategory/:id', adminControl.deleteCategory)
 router.post('/addproduct', middlewares.productImage, adminControl.addProduct)
 router.post('/editproduct/:id', adminControl.editproduct)
 router.post('/deleteproduct/:id', adminControl.deleteProduct)
-router.get('/banner',adminControl.banner)
 router.post('/addBanner',middlewares.bannerImage,adminControl.addBanner)
 router.post('/blockBanner/:id',adminControl.bannerDeactivate)
 router.post('/activeBanner/:id',adminControl.bannerActivate)
+router.post('/addCoupon',adminControl.addCoupon)
+router.post('/deactivateCoupon/:id',adminControl.deActivateCoupon)
+router.post('/activateCoupon/:id',adminControl.activateCoupon)
 
+  
 
 
 module.exports = router;

@@ -58,9 +58,22 @@ const UserSchema = new mongoose.Schema({
     required: true,
     default: true
   },
+  isVerified : {
+    type: Boolean,
+    required : true,
+    default : false
+  },
   Address : {
     type : [AddressSchema]
-  }
+  },
+  otp : {
+    type:Number
+  },
+  redeemedCoupons : [{
+    type : mongoose.Schema.Types.ObjectId,
+    ref:'Coupon'
+  }]
+
 },{timestamps : true});
 
 //password hash and salt 

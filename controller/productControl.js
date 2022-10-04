@@ -4,9 +4,12 @@ const userModel = require('../models/userModel');
 const ProductModel = require('../models/ProductModel');
 const categoryModel = require('../models/categoryModel')
 const wishlistModel = require('../models/wishlistModel')
+const couponModel = require('../models/couponModel')
 const bannerModel = require('../models/bannerModel')
 var mongoose = require('mongoose');
 const { find } = require('../models/userModel');
+const { response } = require('../app');
+
 
 
 module.exports = {
@@ -16,11 +19,11 @@ module.exports = {
       const allCategory = await categoryModel.find()
       const Allproduct = await productModel.find()
         .limit(12).exec();
-       
-      res.render('home', { Allproduct,allCategory,viewBanner});
+
+      res.render('home', { Allproduct, allCategory, viewBanner });
     } catch (error) {
       res.redirect('/home')
-      return res.status(500).json({error})
+      return res.status(500).json({ error })
     }
   },
   pageProduct: async (req, res) => {
@@ -28,17 +31,17 @@ module.exports = {
       const allCategory = await categoryModel.find()
       const allProduct = await productModel.find()
         .limit(12).exec();
-      res.render('user/product', { allProduct,allCategory });
-    } catch (error) {      
+      res.render('user/product', { allProduct, allCategory });
+    } catch (error) {
       res.redirect('/home')
-      return res.status(500).json({error})
+      return res.status(500).json({ error })
     }
   },
   viewProduct: async (req, res) => {
     try {
       const relateProduct = await productModel.find().limit(4)
       const oneProduct = await productModel.findById(req.params.id)
-      res.render('user/view-product', { oneProduct,relateProduct })
+      res.render('user/view-product', { oneProduct, relateProduct })
     } catch (error) {
       console.log(error);
       res.redirect('/')
@@ -99,11 +102,12 @@ module.exports = {
   },
   getcart: async (req, res) => {
     try {
-      const userId = req.user.id     
+      const userId = req.user.id
       const viewcart = await cartModel.findOne({ userId: userId }).populate("products.productId").exec()
-      res.render('user/shoping-cart', { viewcart })
+      const coupon = await couponModel.find()
+      res.render('user/shoping-cart', { viewcart, coupon })
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       res.redirect('/')
     }
   },
@@ -189,8 +193,8 @@ module.exports = {
       const findwish = await wishlistModel.findOne({ userId: userId }).populate("myWish.productId").exec()
       res.render('user/wishlist', { findwish: findwish })
     } catch (error) {
-      console.log(error);
-     
+      // console.log(error);
+
     }
   },
 
@@ -205,5 +209,45 @@ module.exports = {
       return res.status(500).json({ err })
     }
   },
-  
+  redeem: async (req, res,next) => {
+
+    const userId = req.user.id
+    const couponCode = req.params.id
+    
+    try {
+
+      const user = await userModel.findById(userId).exec()
+      const findCart = await cartModel.findOne({ userId })
+      const findCoupon = await couponModel.findOne({couponCode})
+      const totalPrice = findCart?.total
+      const expDate = findCoupon?.expDate
+
+
+      //checking coupon expiry date
+      const isNotExpired = expDate ? new Date() <= expDate : true
+
+      if (findCoupon?.isActive && isNotExpired) {
+        const isRedeemed = user.redeemedCoupons.includes(findCoupon.id)
+        if(!isRedeemed){
+          if(totalPrice >= findCoupon.minPurchase){
+            const discount = ((totalPrice * findCoupon.discount) / 100)
+            const couponDiscount = discount <= findCoupon?.maxLimit ? Number (discount) : Number(findCoupon.maxLimit)
+          //saving coupon details in session
+            req.session.coupon = {
+              id : findCoupon.id,
+              code : findCoupon.couponCode,
+              discount: couponDiscount
+            }         
+            return res.status(200).json({couponDiscount :couponDiscount,totalPrice:totalPrice ,message : "coupon is valid"});
+
+          }
+          req.session.coupon == null
+          return res.status(401).json({message : "kittunnilla"})
+        }
+      }
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
 }
