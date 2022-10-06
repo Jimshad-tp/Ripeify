@@ -58,6 +58,7 @@ router.post('/addtowishlist/:id', productControl.addTowishlist)
 router.get('/getwishlist', productControl.getWishlist)
 router.get('/wishlistItemCount', productControl.wishlistItemCount)
 router.post('/redeem/:id',productControl.redeem)
+router.post('/placeOrder',orderControl.placeOrder)
 
 
 

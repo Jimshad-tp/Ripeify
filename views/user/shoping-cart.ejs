@@ -1,5 +1,6 @@
 <%- include('../partials/user-header') %>
 
+
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
   <div class="container">
@@ -106,14 +107,8 @@
 
                   <form id="couponForm" method="post">
                     <input type="text" placeholder="Enter your coupon code" id="couponCode" />
-                    <button type="submit" class="site-btn">APPLY COUPON</button>
+                    <button type="submit" class="site-btn mt-3">APPLY COUPON</button>
                   </form>
-                  <!-- 
-                  <label for="recipient-name" class="col-form-label"></label>
-                  <form id="couponForm">
-                  <select class="form-select" id="couponCode"> -->
-
-                  <!-- <option selected id="couponCode">choose...</option> -->
 
 
                 </div>
@@ -129,13 +124,15 @@
               <li>Subtotal <span><del>₹<%= viewcart.subTotal.toFixed(2) %></del></span></li>
               <% let discount = viewcart.subTotal - viewcart.total %>
               <li>Cart Discount <span>₹<%=discount.toFixed(2)%></span></li>
-              
 
-
-
-
-
+              <% if(couponCode) {%>
+                <li >CouponCode<span class="text-muted" ><%= couponCode %> </span></li> 
+                <li>CouponDiscount<span class="text-muted"> ₹ <%= couponDiscount %> </span></li>
+                <li>Total <span> ₹ <%= (viewcart.total - couponDiscount) %> </span></li>
+                <% }else {%> 
+      
               <li>Total <span>₹<%= viewcart.total.toFixed(2) %></span></li>
+              <% } %> 
             </ul>
             <a href="/checkout" class="btn btn-primary rounded-pill py-sm-3 px-sm-5 ">PROCEED TO CHECKOUT</a>
           </div>
@@ -189,26 +186,21 @@
     document.forms["couponForm"].addEventListener("submit", async (event) => {
       event.preventDefault();
       const couponCode = document.getElementById("couponCode").value;
-      let response;
+    let response;
 
       try {
         response = await axios({
           method: "post",
           url: `redeem/${couponCode}`,
         })
-console.log(response);
+
         if (response.status == 200) {
-        
-          $("#cartItemtotal").load(location.href + " #cartItemtotal>*", "");
-          await Swal.fire(
+         const response =Swal.fire(
             'success!',
-            `You saved money ₹ ${response.data.couponDiscount}`,
+            `You saved money `,
             'success'
            
           )
-
-
-
 
 
         }

@@ -105,7 +105,13 @@ module.exports = {
       const userId = req.user.id
       const viewcart = await cartModel.findOne({ userId: userId }).populate("products.productId").exec()
       const coupon = await couponModel.find()
-      res.render('user/shoping-cart', { viewcart, coupon })
+
+      const couponCode = req.session.coupon?.code
+      const couponDiscount = req.session.coupon?.discount
+
+     
+
+      res.render('user/shoping-cart', { viewcart, coupon,couponCode,couponDiscount })
     } catch (error) {
       // console.log(error);
       res.redirect('/')
@@ -242,7 +248,7 @@ module.exports = {
 
           }
           req.session.coupon == null
-          return res.status(401).json({message : "kittunnilla"})
+          return res.status(401).json({message : "min purchase amount"})
         }
       }
     } catch (error) {

@@ -1,9 +1,8 @@
-
-<br><br><br>
-
+<%- include('../partials/user-header') %>
+<br><br><br><br><br><br>
+<!-- 
 <p>
   <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Toggle first element</a>
-
 </p>
 <div class="row">
   <div class="col">
@@ -20,7 +19,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 <% if(user.Address.length>0) {%>
@@ -30,8 +29,10 @@
     <div class="col-lg-4  p-md-5 " id="">
       <div class="card">
         <div class="card-body">
+          <!-- <form action="/placeOrder" method="post" id="orderForm"> -->
           <h5 class="card-title">
             <ion-icon name="location-outline"></ion-icon>
+
           </h5>
           <address class="card-text"><%= userAddress.firstName + ' ' +userAddress.lastName %><br>
             <%= userAddress.house %>,<br>
@@ -42,7 +43,7 @@
           </address>
           <ul class="list-inline m-0">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="">
+              <input class="form-check-input" type="radio" value="<%= index %>" name="addressPosition" id="addressPosition" onclick="getAddressIndex('<%=userAddress.id%>')">
               <label class="form-check-label" for="flexCheckIndeterminate">
               </label>
               <li class="list-inline-item float-end">
@@ -102,7 +103,7 @@
             </form>
           </div>
         </div>
-        </form>
+
       </div>
     </div>
   </div>
@@ -115,9 +116,10 @@
   <div class="container">
     <div class="checkout__form">
       <h4>Shipping Details</h4>
-      <form action="/addAddress" method="post">
-        <div class="row">
-          <div class="col-lg-6 col-md-1">
+
+      <div class="row">
+        <div class="col-lg-6 col-md-1">
+          <form action="/addAddress" method="post">
             <h5>Add New Address</h5>
             <div class="row mt-2">
               <div class="col-md-6">
@@ -159,36 +161,55 @@
               </div>
             </div>
             <div class="py-5 md-3"><button class="btn btn-primary rounded-pill py-sm-3 px-sm-5" type="submit">Add Address</button></div>
-          </div>
-      </form>
-      <div class="col-lg-6 col-md-6">
-        <% if(findCart.products.length >0) {%>
-        <div class="checkout__order">
-          <h4>Your Order</h4>
-          <div class="checkout__order__products">Products <span>Total</span></div>
-          <% findCart.products.forEach((listItem)=> { %>
-          <ul>
-            <li><%= listItem.name %> <span>₹ <%= listItem.offerPrice ? (listItem.quantity * listItem.offerPrice) : (listItem.quantity * listItem.price) %> </span></li>
-          </ul>
-          <% }) %>
-          <div class="checkout__order__subtotal">Subtotal <span>₹ <del><%= findCart.subTotal %></del></span></div>
-          <div class="checkout__order__total">Discount<span>₹ <%= (findCart.subTotal.toFixed(2) - findCart.total.toFixed(2)) %></span></div>
-          <div class="checkout__order__total">Total <span>₹ <%= findCart.total  %></span></div>
-          <div class="checkout__input__checkbox">
-            <label for="payment">
-              Cash On Delivery
-              <input type="checkbox" id="payment">
-              <span class="checkmark"></span>
-            </label>
-          </div>
-          <div class="checkout__input__checkbox">
-            <label for="paypal">
-              online payment
-              <input type="checkbox" id="paypal">
-              <span class="checkmark"></span>
-            </label>
-          </div>
-          <button type="submit" class="btn btn-primary rounded-pill py-sm-3 px-sm-5">PLACE ORDER</button>
+          </form>
+        </div>
+
+
+
+
+
+        <div class="col-lg-6 col-md-6">
+          <form action="/placeOrder" method="post" id="orderForm">
+            <% if(findCart.products.length >0) {%>
+
+            <div class="checkout__order">
+
+              <h4>Your Order</h4>
+              <div class="checkout__order__products">Products <span>Total</span></div>
+              <% findCart.products.forEach((listItem)=> { %>
+              <ul>
+                <li><%= listItem.name %> <span>₹ <%= listItem.offerPrice.toFixed(2) ? (listItem.quantity.toFixed(2) * listItem.offerPrice.toFixed(2)) : (listItem.quantity.toFixed(2) * listItem.price.toFixed(2)) %> </span></li>
+              </ul>
+              <% }) %>
+              <div class="checkout__order__subtotal">Subtotal <span>₹ <del><%= findCart.subTotal %></del></span></div>
+              <div class="checkout__order__total">Discount<span>₹ <%= (findCart.subTotal.toFixed(2) - findCart.total.toFixed(2)) %></span></div>
+              <% if(couponCode) {%>
+              <div class="checkout__order__total">coupon code<span class="text-muted">₹ <%=couponCode%></span></div>
+              <div class="checkout__order__total">Coupon Discount<span class="text-muted">₹ <%=couponDiscount  %></span></div>
+              <div class="checkout__order__total">Total <span>₹ <%= (findCart.total - couponDiscount) %></span></div>
+              <% } else {%>
+              <div class="checkout__order__total">Total <span>₹ <%= findCart.total%></span></div>
+              <% } %>
+              <div class="checkout__input__checkbox">
+                <label for="payment">
+                  Cash On Delivery
+                  <input type="radio" id="cod" name="paymentType" value="cash-on-elivery" checked>
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+              <div class="checkout__input__checkbox">
+                <label for="paypal">
+                  online payment
+                  <input type="radio" id="online-payment" name="paymentType" value="razorPay">
+                  <span class="checkmark"></span>
+
+                </label>
+              </div>
+              <input type="hidden" value="" id="myAddress" name="myAddress">
+              <button type="submit" class="btn btn-primary rounded-pill py-sm-3 px-sm-5">PLACE ORDER</button>
+
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -201,7 +222,43 @@
 <%- include("../partials/footer") %>
 
 <script src="/js/checkout.js"></script>
-</body>
 
-</html>
 
+<script>
+  function getAddressIndex(id) {
+    let address = document.getElementById("myAddress").value = id
+  }
+  console.log(address);
+  document.forms["orderForm"].addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const paymentType = $('input[name=paymentType]:checked', '#orderForm').val()
+    console.log(paymentType);
+    if (paymentType == "cashonDelivery") {
+
+      checkout(address)
+
+    }
+  });
+
+  async function checkout(address) {
+    try {
+      const response = await axios({
+        url: '/placeOrder',
+        method: 'post',
+        data: address
+      })
+      if (response.status == 200) {
+
+        await Swal.fire(
+          'success!',
+          `You saved money`,
+          'success'
+
+        )
+      }
+
+    } catch (error) {
+
+    }
+  }
+</script>
